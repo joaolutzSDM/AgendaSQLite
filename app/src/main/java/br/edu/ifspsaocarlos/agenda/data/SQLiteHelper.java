@@ -10,6 +10,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
     static final String KEY_NAME = "nome";
     static final String KEY_FONE = "fone";
     static final String KEY_EMAIL = "email";
+    static final String KEY_FAV = "favorite";
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_CREATE = "CREATE TABLE "+ DATABASE_TABLE +" (" +
             KEY_ID  +  " INTEGER PRIMARY KEY AUTOINCREMENT, " +

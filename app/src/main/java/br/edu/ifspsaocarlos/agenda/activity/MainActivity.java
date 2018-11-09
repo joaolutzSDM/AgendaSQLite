@@ -1,5 +1,6 @@
 package br.edu.ifspsaocarlos.agenda.activity;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -172,6 +173,7 @@ public class MainActivity extends AppCompatActivity{
 
 
 
+    @SuppressLint("RestrictedApi")
     private void updateUI(String nomeContato)
     {
 
@@ -186,7 +188,6 @@ public class MainActivity extends AppCompatActivity{
             contatos.addAll(cDAO.buscaContato(nomeContato));
             empty.setText(getResources().getString(R.string.contato_nao_encontrado));
             fab.setVisibility(View.GONE);
-
         }
 
         recyclerView.getAdapter().notifyDataSetChanged();
@@ -203,11 +204,15 @@ public class MainActivity extends AppCompatActivity{
 
         adapter.setClickListener(new ContatoAdapter.ItemClickListener() {
             @Override
-            public void onItemClick(int position) {
-                final Contato contato = contatos.get(position);
+            public void onItemClick(Contato contato) {
                 Intent i = new Intent(getApplicationContext(), DetalheActivity.class);
                 i.putExtra("contato", contato);
                 startActivityForResult(i, 2);
+            }
+
+            @Override
+            public void onFavoriteClick(Contato contato) {
+
             }
         });
 

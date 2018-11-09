@@ -72,8 +72,6 @@ public class ContatoDAO {
             contato.setFone(cursor.getString(2));
             contato.setEmail(cursor.getString(3));
             contatos.add(contato);
-
-
         }
         cursor.close();
 
@@ -88,16 +86,25 @@ public class ContatoDAO {
         values.put(SQLiteHelper.KEY_FONE, c.getFone());
         values.put(SQLiteHelper.KEY_EMAIL, c.getEmail());
 
-       if (c.getId()>0)
-          database.update(SQLiteHelper.DATABASE_TABLE, values, SQLiteHelper.KEY_ID + "="
-                + c.getId(), null);
+        if (c.getId()>0)
+            database.update(SQLiteHelper.DATABASE_TABLE, values, SQLiteHelper.KEY_ID + "="
+                    + c.getId(), null);
         else
-           database.insert(SQLiteHelper.DATABASE_TABLE, null, values);
+            database.insert(SQLiteHelper.DATABASE_TABLE, null, values);
 
         database.close();
     }
 
+    public void favoritar(Contato c) {
+        database=dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(SQLiteHelper.KEY_FAV, c.isFavorito());
 
+        database.update(SQLiteHelper.DATABASE_TABLE, values, SQLiteHelper.KEY_ID + "="
+                + c.getId(), null);
+
+        database.close();
+    }
 
     public void apagaContato(Contato c)
     {
