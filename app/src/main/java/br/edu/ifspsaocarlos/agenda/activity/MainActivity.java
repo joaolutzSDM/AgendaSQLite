@@ -21,6 +21,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -51,7 +52,6 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public void onBackPressed() {
         if (!searchView.isIconified()) {
-
             searchView.onActionViewCollapsed();
             updateUI(null);
         } else {
@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity{
             String query = intent.getStringExtra(SearchManager.QUERY);
             searchView.clearFocus();
             updateUI(query);
-
         }
     }
 
@@ -83,9 +82,9 @@ public class MainActivity extends AppCompatActivity{
         Intent intent = getIntent();
         handleIntent(intent);
 
-        cDAO= new ContatoDAO(this);
+        cDAO = new ContatoDAO(this);
 
-        empty= (TextView) findViewById(R.id.empty_view);
+        empty = (TextView) findViewById(R.id.empty_view);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -118,8 +117,7 @@ public class MainActivity extends AppCompatActivity{
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.pesqContato).getActionView();
 
-        ImageView closeButton = (ImageView)searchView.findViewById(R.id.search_close_btn);
-
+        ImageView closeButton = (ImageView) searchView.findViewById(R.id.search_close_btn);
 
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,16 +131,28 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-
-
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
         searchView.setIconifiedByDefault(true);
-
 
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.pesqFavoritos:
+                List<Contato> result = cDAO.buscaContatosFavoritos();
+                if(result.size() > 0) {
+                    contatos.clear();
+                    contatos.addAll(result);
+                    recyclerView.getAdapter().notifyDataSetChanged();
+                } else {
+                    showSnackBar("Não há contatos favoritados!");
+                }
+                return true;
+        }
+        return false;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -151,8 +161,6 @@ public class MainActivity extends AppCompatActivity{
                 showSnackBar(getResources().getString(R.string.contato_adicionado));
                 updateUI(null);
             }
-
-
 
         if (requestCode == 2) {
             if (resultCode == RESULT_OK)
@@ -176,7 +184,6 @@ public class MainActivity extends AppCompatActivity{
     @SuppressLint("RestrictedApi")
     private void updateUI(String nomeContato)
     {
-
         contatos.clear();
 
         if (nomeContato==null) {
@@ -201,7 +208,6 @@ public class MainActivity extends AppCompatActivity{
 
     private void setupRecyclerView() {
 
-
         adapter.setClickListener(new ContatoAdapter.ItemClickListener() {
             @Override
             public void onItemClick(Contato contato) {
@@ -212,10 +218,11 @@ public class MainActivity extends AppCompatActivity{
 
             @Override
             public void onFavoriteClick(Contato contato) {
-
+                contato.setFavorito(!contato.isFavorito());
+                cDAO.favoritar(contato);
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
         });
-
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
