@@ -22,18 +22,22 @@ public class DetalheActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhe);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         if (getIntent().hasExtra("contato"))
         {
             this.c = (Contato) getIntent().getSerializableExtra("contato");
-            EditText nameText = (EditText)findViewById(R.id.editTextNome);
+            EditText nameText = findViewById(R.id.editTextNome);
             nameText.setText(c.getNome());
-            EditText foneText = (EditText)findViewById(R.id.editTextFone);
+            EditText foneText = findViewById(R.id.editTextFone);
             foneText.setText(c.getFone());
-            EditText emailText = (EditText)findViewById(R.id.editTextEmail);
+            EditText fone2Text = findViewById(R.id.editTextFone2);
+            fone2Text.setText(c.getFone2());
+            EditText emailText = findViewById(R.id.editTextEmail);
             emailText.setText(c.getEmail());
+            EditText birthDayText = findViewById(R.id.editTextBirthday);
+            birthDayText.setText(c.getBirthday());
             int pos =c.getNome().indexOf(" ");
             if (pos==-1)
                 pos=c.getNome().length();
@@ -80,15 +84,18 @@ public class DetalheActivity extends AppCompatActivity {
     {
         String name = ((EditText) findViewById(R.id.editTextNome)).getText().toString();
         String fone = ((EditText) findViewById(R.id.editTextFone)).getText().toString();
+        String fone2 = ((EditText) findViewById(R.id.editTextFone2)).getText().toString();
         String email = ((EditText) findViewById(R.id.editTextEmail)).getText().toString();
+        String birthday = ((EditText) findViewById(R.id.editTextBirthday)).getText().toString();
 
         if (c==null)
             c = new Contato();
 
-
         c.setNome(name);
         c.setFone(fone);
+        c.setFone2(fone2);
         c.setEmail(email);
+        c.setBirthday(birthday);
 
         cDAO.salvaContato(c);
         Intent resultIntent = new Intent();

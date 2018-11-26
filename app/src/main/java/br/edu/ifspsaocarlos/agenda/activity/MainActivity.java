@@ -179,8 +179,6 @@ public class MainActivity extends AppCompatActivity{
                 .show();
     }
 
-
-
     @SuppressLint("RestrictedApi")
     private void updateUI(String nomeContato)
     {
@@ -269,7 +267,6 @@ public class MainActivity extends AppCompatActivity{
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
 
     }
 

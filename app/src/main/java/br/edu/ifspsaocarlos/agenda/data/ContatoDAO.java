@@ -22,8 +22,10 @@ public class ContatoDAO {
             SQLiteHelper.KEY_ID,
             SQLiteHelper.KEY_NAME,
             SQLiteHelper.KEY_FONE,
+            SQLiteHelper.KEY_FONE_2,
             SQLiteHelper.KEY_EMAIL,
-            SQLiteHelper.KEY_FAV
+            SQLiteHelper.KEY_FAV,
+            SQLiteHelper.KEY_BIRTHDAY
     };
 
     public  List<Contato> buscaTodosContatos()
@@ -54,13 +56,11 @@ public class ContatoDAO {
 
         Cursor cursor;
 
-        String where=SQLiteHelper.KEY_NAME + " like ?";
-        String[] argWhere=new String[]{nome + "%"};
-
+        String where = SQLiteHelper.KEY_NAME + " LIKE ? OR " + SQLiteHelper.KEY_EMAIL + " LIKE ?";
+        String[] argWhere = new String[] {nome + "%", "%" + nome + "%"};
 
         cursor = database.query(SQLiteHelper.DATABASE_TABLE, cols, where , argWhere,
                 null, null, SQLiteHelper.KEY_NAME);
-
 
         while (cursor.moveToNext())
         {
@@ -86,7 +86,6 @@ public class ContatoDAO {
         cursor = database.query(SQLiteHelper.DATABASE_TABLE, cols, where , argWhere,
                 null, null, SQLiteHelper.KEY_NAME);
 
-
         while (cursor.moveToNext())
         {
             contatos.add(prepare(cursor));
@@ -103,8 +102,10 @@ public class ContatoDAO {
         ContentValues values = new ContentValues();
         values.put(SQLiteHelper.KEY_NAME, c.getNome());
         values.put(SQLiteHelper.KEY_FONE, c.getFone());
+        values.put(SQLiteHelper.KEY_FONE_2, c.getFone2());
         values.put(SQLiteHelper.KEY_EMAIL, c.getEmail());
         values.put(SQLiteHelper.KEY_FAV, c.isFavorito());
+        values.put(SQLiteHelper.KEY_BIRTHDAY, c.getBirthday());
 
         if (c.getId() > 0)
             database.update(SQLiteHelper.DATABASE_TABLE, values, SQLiteHelper.KEY_ID + "="
@@ -139,8 +140,11 @@ public class ContatoDAO {
         contato.setId(cursor.getInt(0));
         contato.setNome(cursor.getString(1));
         contato.setFone(cursor.getString(2));
-        contato.setEmail(cursor.getString(3));
-        contato.setFavorito(cursor.getInt(4) == 1);
+        contato.setFone2(cursor.getString(3));
+        contato.setEmail(cursor.getString(4));
+        contato.setFavorito(cursor.getInt(5) == 1);
+        contato.setBirthday(cursor.getString(6));
         return contato;
     }
+
 }

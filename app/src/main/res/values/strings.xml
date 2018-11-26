@@ -7,7 +7,9 @@
     <string name="excluir">Excluir</string>
     <string name="nome">Nome</string>
     <string name="fone">Fone</string>
+    <string name="fone2">Fone 2</string>
     <string name="email">Email</string>
+    <string name="birthday">Dia/Mês aniversário</string>
     <string name="lista_vazia">Lista de contatos vazia</string>
     <string name="contato_nao_encontrado">Contato não encontrado</string>
     <string name="contato_adicionado">Contato adicionado</string>
