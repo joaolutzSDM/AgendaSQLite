@@ -58,8 +58,8 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
 
         ContatoViewHolder(View view) {
             super(view);
-            nome = (TextView) view.findViewById(R.id.nome);
-            imgFavorite = (ImageView) view.findViewById(R.id.imgFavorite);
+            nome = view.findViewById(R.id.nome);
+            imgFavorite = view.findViewById(R.id.imgFavorite);
             view.setOnClickListener(this);
             imgFavorite.setOnClickListener(this);
         }
